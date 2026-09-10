@@ -33,7 +33,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif;
     color: var(--ink);
     background:
         radial-gradient(circle at 12% 4%, rgba(71, 107, 87, 0.09), transparent 27rem),
@@ -1221,7 +1221,7 @@ code,
     display: block;
     margin-bottom: 0.3rem;
     color: var(--ink);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     font-size: 1.45rem;
     font-weight: 650;
 }
