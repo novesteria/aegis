@@ -1,4 +1,4 @@
-"""Layer #6 — Python third-party dependency declaration coverage.
+"""Layer #3 — Python third-party dependency declaration coverage.
 
 Catches the *runtime* failure mode where pip install succeeds, the
 import statement parses, but at first use the module raises
@@ -35,7 +35,7 @@ from __future__ import annotations
 import ast
 import re
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 from aegis.checks._python_helpers import (
@@ -45,7 +45,6 @@ from aegis.checks._python_helpers import (
 )
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 # Common import-name → pkg-name aliases. Limited to the painful ones.
 _PKG_ALIASES: dict[str, str] = {
@@ -100,7 +99,7 @@ def _parse_requirements_txt(path: Path) -> set[str]:
             if not line or line.startswith("-"):
                 continue
             # Strip version markers + extras: 'pkg==1.0', 'pkg[extra]>=1.0'
-            name = re.split(r"[<>=!\[~;\s]", line, 1)[0].strip().lower()
+            name = re.split(r"[<>=!\[~;\s]", line, maxsplit=1)[0].strip().lower()
             if name:
                 declared.add(name)
     except OSError:
@@ -134,7 +133,7 @@ def _parse_pyproject_toml(path: Path) -> set[str]:
     for m in re.finditer(r"dependencies\s*=\s*\[([\s\S]*?)\]", blob):
         for part in re.split(r"[,\n]", m.group(1)):
             cleaned = part.strip().strip('"').strip("'")
-            name = re.split(r"[<>=!\[~;\s]", cleaned, 1)[0].strip().lower()
+            name = re.split(r"[<>=!\[~;\s]", cleaned, maxsplit=1)[0].strip().lower()
             if name and name.replace("-", "").replace("_", "").isalnum():
                 declared.add(name)
 
@@ -178,9 +177,7 @@ def _is_declared(top_module: str, declared: DeclaredDeps) -> bool:
         return True
     if candidate.replace("_", "-") in declared.names:
         return True
-    if top_module.lower().replace("_", "-") in declared.names:
-        return True
-    return False
+    return top_module.lower().replace("_", "-") in declared.names
 
 
 def find_undeclared_deps(
@@ -250,7 +247,7 @@ def find_undeclared_deps(
 
 
 class PythonDepsCompletenessCheck(CheckLayer):
-    """Layer #6 — third-party Python imports must be declared."""
+    """Layer #3 — third-party Python imports must be declared."""
 
     NAME = "python_deps_completeness"
     KIND = LayerKind.deterministic

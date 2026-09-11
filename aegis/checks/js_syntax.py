@@ -1,4 +1,4 @@
-"""Layer #19 — `node --check` syntax verification, with Python fallback.
+"""Layer #16 — `node --check` syntax verification, with Python fallback.
 
 Catches syntactically invalid JS that the file-text checks miss:
 mismatched template literals, ``await`` outside async functions,
@@ -30,7 +30,6 @@ from pathlib import Path
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
 from aegis.subprocess_runner import run_cmd, scrub_env
-
 
 # Match what node --check accepts (no .ts — those go through tsc).
 _JS_EXTS: tuple[str, ...] = (".js", ".mjs", ".cjs")
@@ -127,7 +126,7 @@ def python_js_fallback(js_files: list[Path], root: Path) -> list[str]:
 
 
 class JsSyntaxCheck(CheckLayer):
-    """Layer #19 — `node --check` over every JS file (Python fallback if no node)."""
+    """Layer #16 — `node --check` over every JS file (Python fallback if no node)."""
 
     NAME = "js_syntax"
     KIND = LayerKind.deterministic

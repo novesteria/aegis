@@ -1,6 +1,6 @@
-"""Layer #12 — imports must match exports / file paths in casing.
+"""Layer #9 — imports must match exports / file paths in casing.
 
-Complements ``named_import_consistency`` (Layer #11):
+Complements ``named_import_consistency`` (Layer #8):
 
 - #11 flags when an imported name simply isn't exported anywhere.
 - #12 flags when the symbol IS exported but with a different casing
@@ -44,7 +44,6 @@ from aegis.checks._ts_helpers import (
 )
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 # ----- TS/JS path-casing helpers ------------------------------------------
 
@@ -113,7 +112,7 @@ def _path_casing_mismatch(
         # Case-insensitive lookup.
         disk_names = listing.get(seg.lower(), [])
         if not disk_names and last_seg:
-            for low_name, real_list in listing.items():
+            for real_list in listing.values():
                 for real in real_list:
                     stem, _, _ = real.rpartition(".")
                     if stem and stem.lower() == seg.lower() and stem != seg:
@@ -337,7 +336,7 @@ def find_case_mismatches(
 
 
 class ImportCaseConsistencyCheck(CheckLayer):
-    """Layer #12 — imports must match exports / file paths in casing."""
+    """Layer #9 — imports must match exports / file paths in casing."""
 
     NAME = "import_case_consistency"
     KIND = LayerKind.deterministic

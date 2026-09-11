@@ -1,4 +1,4 @@
-"""Layer #13 — same `interface X` / `type X` declared with different shapes.
+"""Layer #10 — same `interface X` / `type X` declared with different shapes.
 
 Catches the failure mode where ``types/crypto.ts`` declares
 ``interface Coin { id, name, symbol, price, … }`` while
@@ -26,11 +26,11 @@ from __future__ import annotations
 import re
 import time
 from pathlib import Path
+from typing import Any
 
 from aegis.checks._ts_helpers import find_ts_sources
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 # Anchor for an `interface X { … }` or `type X = { … }` declaration. We
 # only capture the open brace; the body is pulled out with manual brace
@@ -126,7 +126,7 @@ def find_duplicate_type_conflicts(
                 continue
             decls.setdefault(name, []).append((rel, members))
 
-    problems: list[dict[str, str | list[str] | int]] = []
+    problems: list[dict[str, Any]] = []
     for name, occurrences in decls.items():
         distinct_files = {rel for rel, _ in occurrences}
         if len(distinct_files) < 2:
@@ -162,7 +162,7 @@ def find_duplicate_type_conflicts(
 
 
 class DuplicateTypeDeclarationsCheck(CheckLayer):
-    """Layer #13 — duplicate ``interface``/``type`` decls with differing shapes."""
+    """Layer #10 — duplicate ``interface``/``type`` decls with differing shapes."""
 
     NAME = "duplicate_type_declarations"
     KIND = LayerKind.deterministic

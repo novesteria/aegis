@@ -1,4 +1,4 @@
-"""Layer #16 — every relative import / script src must resolve on disk.
+"""Layer #13 — every relative import / script src must resolve on disk.
 
 The canonical vanilla-JS bug:
 
@@ -35,7 +35,7 @@ Skips:
 - Full URLs (``http://``, ``//``), inline schemes (``data:``, ``blob:``,
   ``mailto:``, ``tel:``, ``#``).
 - Bare JS imports (``react``, ``@scope/pkg``) — those need ``npm install``
-  to verify; Layer #8 covers them.
+  to verify; Layer #5 covers them.
 """
 
 from __future__ import annotations
@@ -49,7 +49,6 @@ from pathlib import Path
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
 
-
 _SOURCE_EXTS: tuple[str, ...] = (
     ".html", ".htm", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx",
 )
@@ -57,14 +56,14 @@ _TRY_EXTENSIONS: tuple[str, ...] = (".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx"
 
 
 # JS: `import ... from 'X'` / `import 'X'` / `import('X')` / `require('X')`
-_JS_PATTERNS: tuple[re.Pattern, ...] = (
+_JS_PATTERNS: tuple[re.Pattern[str], ...] = (
     re.compile(r"""import\s+(?:[\s\S]+?\s+from\s+)?['"]([^'"]+)['"]"""),
     re.compile(r"""import\s*\(\s*['"]([^'"]+)['"]\s*\)"""),
     re.compile(r"""require\s*\(\s*['"]([^'"]+)['"]\s*\)"""),
 )
 
 # HTML: <script src="X">, <link rel="stylesheet" href="X">.
-_HTML_PATTERNS: tuple[re.Pattern, ...] = (
+_HTML_PATTERNS: tuple[re.Pattern[str], ...] = (
     re.compile(
         r"""<script\b[^>]*\bsrc\s*=\s*['"]([^'"]+)['"]""",
         re.IGNORECASE,
@@ -268,9 +267,8 @@ def _is_external_js(spec: str, aliases: list[TsAlias]) -> bool:
         return True
     if _match_alias(spec, aliases) is not None:
         return False
-    if not spec.startswith(".") and not spec.startswith("/"):
-        return True  # bare specifier — Layer #8 territory
-    return False
+    # Bare specifier: node_deps_completeness territory.
+    return not spec.startswith((".", "/"))
 
 
 def find_unresolved_static_imports(
@@ -321,7 +319,7 @@ def find_unresolved_static_imports(
 
 
 class StaticImportsCheck(CheckLayer):
-    """Layer #16 — relative imports and script/link refs must exist on disk."""
+    """Layer #13 — relative imports and script/link refs must exist on disk."""
 
     NAME = "static_imports"
     KIND = LayerKind.deterministic

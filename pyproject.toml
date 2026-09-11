@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "aegis-validator"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A deterministic validator for AI-generated code."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -54,6 +54,9 @@ documentation = "https://github.com/novesteria/aegis/tree/main/docs"
 issues = "https://github.com/novesteria/aegis/issues"
 changelog = "https://github.com/novesteria/aegis/blob/main/CHANGELOG.md"
 
+[tool.hatch.version]
+path = "aegis/__init__.py"
+
 [tool.hatch.build.targets.wheel]
 packages = ["aegis", "aegis_cli"]
 
@@ -64,6 +67,9 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "SIM", "ARG"]
 ignore = ["E501"]  # line-length handled by formatter
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ARG"]  # pytest fixtures are injected by name
 
 [tool.mypy]
 python_version = "3.11"

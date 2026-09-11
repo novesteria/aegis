@@ -1,6 +1,10 @@
 {
-  "timestamp_utc": "2026-05-23T04:56:26.456880Z",
+  "timestamp_utc": "2026-09-11T11:49:56.492635Z",
   "use_llm": true,
+  "model": "claude-opus-4-7",
+  "aegis_version": "0.1.0",
+  "python": "3.12.14",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
   "total": 20,
   "counts": {
     "pass": 20,
@@ -13,7 +17,7 @@
       "case": "01-palette-substitution",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 8.61,
+      "duration_seconds": 10.65,
       "problems": [],
       "failed_layers": [
         "design_fidelity"
@@ -23,7 +27,7 @@
       "case": "02-forbidden-pattern-apple-flat",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 9.55,
+      "duration_seconds": 9.92,
       "problems": [],
       "failed_layers": [
         "design_fidelity"
@@ -33,7 +37,7 @@
       "case": "03-clean-pass",
       "status": "pass",
       "actual_passed": true,
-      "duration_seconds": 9.64,
+      "duration_seconds": 8.31,
       "problems": [],
       "failed_layers": []
     },
@@ -49,7 +53,7 @@
       "case": "05-npm-install-missing-dep",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 14.7,
+      "duration_seconds": 22.41,
       "problems": [],
       "failed_layers": [
         "npm_install"
@@ -59,7 +63,7 @@
       "case": "06-typescript-compile-error",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 17.42,
+      "duration_seconds": 12.03,
       "problems": [],
       "failed_layers": [
         "tsc",
@@ -71,31 +75,27 @@
       "case": "07-python-missing-import",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 11.33,
+      "duration_seconds": 8.01,
       "problems": [],
       "failed_layers": [
-        "pytest",
-        "design_fidelity",
-        "feature_coverage"
+        "pytest"
       ]
     },
     {
       "case": "08-pytest-assertion-fail",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 11.12,
+      "duration_seconds": 6.85,
       "problems": [],
       "failed_layers": [
-        "pytest",
-        "design_fidelity",
-        "feature_coverage"
+        "pytest"
       ]
     },
     {
       "case": "09-node-deps-missing",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 10.38,
+      "duration_seconds": 9.07,
       "problems": [],
       "failed_layers": [
         "node_deps_completeness"
@@ -105,11 +105,10 @@
       "case": "10-html-js-id-mismatch",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 13.64,
+      "duration_seconds": 14.64,
       "problems": [],
       "failed_layers": [
         "html_js_id_parity",
-        "design_fidelity",
         "feature_coverage"
       ]
     },
@@ -117,18 +116,17 @@
       "case": "11-fastapi-router-double-prefix",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 34.05,
+      "duration_seconds": 7.91,
       "problems": [],
       "failed_layers": [
-        "router_prefix_consistency",
-        "feature_coverage"
+        "router_prefix_consistency"
       ]
     },
     {
       "case": "12-react-prop-mismatch",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 53.84,
+      "duration_seconds": 14.34,
       "problems": [],
       "failed_layers": [
         "react_prop_consistency",
@@ -140,7 +138,7 @@
       "case": "13-npm-ignore-scripts",
       "status": "pass",
       "actual_passed": true,
-      "duration_seconds": 33.11,
+      "duration_seconds": 7.4,
       "problems": [],
       "failed_layers": []
     },
@@ -148,7 +146,7 @@
       "case": "14-duplicate-coin-type",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 39.52,
+      "duration_seconds": 14.52,
       "problems": [],
       "failed_layers": [
         "duplicate_type_declarations",
@@ -160,7 +158,7 @@
       "case": "15-hook-return-drift",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 63.25,
+      "duration_seconds": 13.08,
       "problems": [],
       "failed_layers": [
         "hook_destructure_consistency",
@@ -172,7 +170,7 @@
       "case": "16-typography-substitution",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 13.08,
+      "duration_seconds": 12.28,
       "problems": [],
       "failed_layers": [
         "design_fidelity",
@@ -183,7 +181,7 @@
       "case": "17-density-violation",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 15.98,
+      "duration_seconds": 16.93,
       "problems": [],
       "failed_layers": [
         "design_fidelity",
@@ -194,10 +192,9 @@
       "case": "18-missing-csv-export",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 21.5,
+      "duration_seconds": 11.88,
       "problems": [],
       "failed_layers": [
-        "design_fidelity",
         "feature_coverage"
       ]
     },
@@ -205,7 +202,7 @@
       "case": "19-missing-dark-toggle",
       "status": "pass",
       "actual_passed": false,
-      "duration_seconds": 39.16,
+      "duration_seconds": 14.19,
       "problems": [],
       "failed_layers": [
         "design_fidelity",
@@ -216,7 +213,7 @@
       "case": "20-python-clean-pass",
       "status": "pass",
       "actual_passed": true,
-      "duration_seconds": 13.49,
+      "duration_seconds": 5.74,
       "problems": [],
       "failed_layers": []
     }

@@ -3,14 +3,12 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.static_imports import (
     StaticImportsCheck,
     find_unresolved_static_imports,
     load_ts_aliases,
-    resolve_spec,
 )
 from aegis.result import LayerKind, Verdict
 
@@ -18,7 +16,7 @@ from aegis.result import LayerKind, Verdict
 def test_layer_metadata():
     layer = StaticImportsCheck()
     assert layer.NAME == "static_imports"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
 
 
 def test_resolve_relative_js(tmp_path):

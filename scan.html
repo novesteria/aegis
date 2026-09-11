@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <title>Run Aegis Core or Full · by Novesteria</title>
-    <meta name="description" content="Run the free 24-layer Aegis Core engine on this site, or access the proprietary 75-layer Aegis Full engine." />
+    <meta name="description" content="Run the free 21-layer Aegis Core engine on this site, or access the proprietary 75-layer Aegis Full engine." />
     <meta name="author" content="Novesteria" />
     <link rel="canonical" href="https://aegis.novesteria.com/scan" />
     <meta name="robots" content="noindex" />
@@ -344,7 +344,7 @@
                 <p class="eyebrow">Aegis hosted verification</p>
                 <h1>Choose your verification depth.</h1>
                 <p class="lede">
-                    Run the open-source 24-layer Core pipeline free on this site, or use the
+                    Run the open-source 21-layer Core pipeline free on this site, or use the
                     proprietary 75-layer Full engine with a paid account. Both run inside
                     isolated sandboxes; uploaded archives are not retained.
                 </p>
@@ -360,7 +360,7 @@
                             <span class="engine-title">Aegis Core</span>
                             <span class="edition-badge badge-free">Free</span>
                         </span>
-                        <strong><b>24</b> open-source layers</strong>
+                        <strong><b>21</b> open-source layers</strong>
                         <span>Run it here. No GitHub redirect.</span>
                     </label>
 
@@ -382,7 +382,7 @@
                         <div class="panel-head">
                             <div>
                                 <p class="section-label" id="signinKicker">Aegis Core · Free</p>
-                                <h2 id="signinTitle">Sign in to run 24 layers</h2>
+                                <h2 id="signinTitle">Sign in to run 21 layers</h2>
                             </div>
                             <span class="panel-index" aria-hidden="true">01</span>
                         </div>
@@ -414,7 +414,7 @@
                     <section class="panel" id="uploadPanel" hidden aria-labelledby="uploadTitle">
                         <div class="panel-head">
                             <div>
-                                <p class="section-label" id="uploadKicker">Aegis Core · 24 layers</p>
+                                <p class="section-label" id="uploadKicker">Aegis Core · 21 layers</p>
                                 <h2 id="uploadTitle">Choose the code to verify</h2>
                             </div>
                             <span class="panel-index" aria-hidden="true">02</span>
@@ -443,12 +443,12 @@
                     <h2 id="processTitle">From archive to evidence</h2>
                     <ol class="process-list">
                         <li data-step="1"><strong>Detect the stack</strong>Python, Node.js, TypeScript, JavaScript and static HTML are identified.</li>
-                        <li data-step="2"><strong id="processEngineTitle">Run the 24-layer pipeline</strong><span id="processEngineCopy">Core evaluates every check that applies to the detected stack.</span></li>
+                        <li data-step="2"><strong id="processEngineTitle">Run the 21-layer pipeline</strong><span id="processEngineCopy">Core evaluates every check that applies to the detected stack.</span></li>
                         <li data-step="3"><strong>Return the verdict</strong>Passed and failed checks come back with timings and concrete evidence.</li>
                     </ol>
                     <hr class="aside-rule" />
                     <div class="aside-meta" aria-label="Scan attributes">
-                        <span id="asideEngine">core · 24</span><span>isolated</span><span>ephemeral</span>
+                        <span id="asideEngine">core · 21</span><span>isolated</span><span>ephemeral</span>
                     </div>
                 </aside>
             </div>
@@ -459,7 +459,7 @@
 
     <footer class="site-footer">
         <div class="footer-shell">
-            <span>Aegis Core · free 24-layer scan · Aegis Full · paid 75-layer scan</span>
+            <span>Aegis Core · free 21-layer scan · Aegis Full · paid 75-layer scan</span>
             <span>Built by <a href="https://novesteria.com">Novesteria</a></span>
         </div>
     </footer>
@@ -532,15 +532,15 @@
             var engine = selectedEngine();
             var isFull = engine === 'full';
             signinKicker.textContent = isFull ? 'Aegis Full · Paid access' : 'Aegis Core · Free';
-            signinTitle.textContent = isFull ? 'Sign in to verify Full access' : 'Sign in to run 24 layers';
-            uploadKicker.textContent = isFull ? 'Aegis Full · 75 layers' : 'Aegis Core · 24 layers';
+            signinTitle.textContent = isFull ? 'Sign in to verify Full access' : 'Sign in to run 21 layers';
+            uploadKicker.textContent = isFull ? 'Aegis Full · 75 layers' : 'Aegis Core · 21 layers';
             runBtn.textContent = isFull ? 'Run Aegis Full' : 'Run Core free';
             processKicker.textContent = isFull ? 'Full scan · Paid' : 'Core scan · Free';
-            processEngineTitle.textContent = isFull ? 'Run the 75-layer pipeline' : 'Run the 24-layer pipeline';
+            processEngineTitle.textContent = isFull ? 'Run the 75-layer pipeline' : 'Run the 21-layer pipeline';
             processEngineCopy.textContent = isFull
                 ? 'Full evaluates deeper runtime, contract, schema and infrastructure risks.'
                 : 'Core evaluates every check that applies to the detected stack.';
-            asideEngine.textContent = isFull ? 'full · 75' : 'core · 24';
+            asideEngine.textContent = isFull ? 'full · 75' : 'core · 21';
         }
 
         function setEngine(engine) {
@@ -598,10 +598,10 @@
             accessPanel.hidden = false;
             if (access.full === false) {
                 accessTitle.textContent = 'Full access is not active';
-                accessMessage.textContent = 'Aegis Full is the paid 75-layer engine. This account can use the free 24-layer Core scan now.';
+                accessMessage.textContent = 'Aegis Full is the paid 75-layer engine. This account can use the free 21-layer Core scan now.';
             } else if (access.full === 'error') {
                 accessTitle.textContent = 'Access could not be verified';
-                accessMessage.textContent = 'Try again later or switch to the free 24-layer Core engine.';
+                accessMessage.textContent = 'Try again later or switch to the free 21-layer Core engine.';
             } else {
                 accessTitle.textContent = 'Checking Full access';
                 accessMessage.innerHTML = '<span class="spinner"></span>Checking your account entitlement…';
@@ -680,7 +680,7 @@
             var totalSkipped = skippedCount + Number(engineCounts.skipped || 0);
             var passClass = report && report.passed ? 'pass' : 'fail';
             var stacks = (report && report.stacks_detected || []).join(', ') || 'unknown';
-            var engineLabel = engine === 'full' ? 'Aegis Full · 75 layers' : 'Aegis Core · 24 layers';
+            var engineLabel = engine === 'full' ? 'Aegis Full · 75 layers' : 'Aegis Core · 21 layers';
 
             var html = '';
             html += '<div class="report-tier">' + escapeHtml(engineLabel) + '</div>';

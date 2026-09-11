@@ -1,4 +1,4 @@
-"""Layer #21 — `npx tsc --noEmit` must pass when `tsconfig.json` exists.
+"""Layer #18 — `npx tsc --noEmit` must pass when `tsconfig.json` exists.
 
 The whole point of TypeScript is type checking. If a generated React/TS
 project doesn't type-check, this is a hard failure, not a
@@ -25,8 +25,8 @@ import json
 import time
 from pathlib import Path
 
-from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.checks._tsconfig_repair import repair_root_tsconfig_file
+from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
 from aegis.subprocess_runner import run_cmd, scrub_env
 
@@ -85,7 +85,7 @@ def patch_tsconfig_excludes(tsconfig_path: Path) -> bool:
 
 
 class TscCheck(CheckLayer):
-    """Layer #21 — `tsc --noEmit` type check (skip when no tsconfig.json)."""
+    """Layer #18 — `tsc --noEmit` type check (skip when no tsconfig.json)."""
 
     NAME = "tsc"
     KIND = LayerKind.deterministic

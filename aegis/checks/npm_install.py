@@ -1,4 +1,4 @@
-"""Layer #20 — `npm install` (or `npm ci`) must succeed.
+"""Layer #17 — `npm install` (or `npm ci`) must succeed.
 
 For Node projects this is the most concrete signal that the
 ``package.json`` is at least cohesive enough to resolve all deps. If
@@ -23,7 +23,6 @@ Strategy:
 from __future__ import annotations
 
 import time
-from pathlib import Path
 
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
@@ -37,7 +36,7 @@ def _npm_argv0() -> str:
 
 
 class NpmInstallCheck(CheckLayer):
-    """Layer #20 — `npm ci` (or `npm install`) on the project root."""
+    """Layer #17 — `npm ci` (or `npm install`) on the project root."""
 
     NAME = "npm_install"
     KIND = LayerKind.deterministic

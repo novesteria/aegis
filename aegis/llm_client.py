@@ -16,7 +16,7 @@ Llama / cached responses, can pass any object matching the Protocol.
 from __future__ import annotations
 
 import os
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -104,7 +104,7 @@ class AnthropicClient:
         # ``temperature`` parameter outright. Pass it only when the
         # caller explicitly overrode the default; otherwise let the
         # API choose its own.
-        kwargs: dict[str, object] = {
+        kwargs: dict[str, Any] = {
             "model": self._model,
             "max_tokens": max_tokens,
             "messages": [{"role": "user", "content": prompt}],

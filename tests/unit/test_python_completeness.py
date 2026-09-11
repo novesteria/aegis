@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import ast
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.python_completeness import (
@@ -12,7 +12,6 @@ from aegis.checks.python_completeness import (
     stub_reason,
 )
 from aegis.result import LayerKind, Verdict
-import ast
 
 
 def _stmts(src: str) -> list[ast.stmt]:
@@ -110,7 +109,7 @@ def test_abstractmethod_excluded(tmp_path):
 def test_layer_metadata():
     layer = PythonCompletenessCheck()
     assert layer.NAME == "python_completeness"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "python" in layer.APPLIES_TO
 
 

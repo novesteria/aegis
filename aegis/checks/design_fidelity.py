@@ -1,4 +1,4 @@
-"""Layer #23 — LLM-as-judge for design-brief fidelity, with a
+"""Layer #20 — LLM-as-judge for design-brief fidelity, with a
 deterministic evidence override.
 
 Hybrid layer: the LLM scores four dimensions (palette, philosophy
@@ -25,9 +25,9 @@ that REALLY ignored the brief, not ones that interpreted it loosely.
 
 from __future__ import annotations
 
+import contextlib
 import re
 import time
-from pathlib import Path
 from typing import Any
 
 from aegis.checks._llm_helpers import (
@@ -38,7 +38,6 @@ from aegis.checks._llm_helpers import (
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.design_dna import DesignDNA
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _MIN_OVERALL_SCORE = 6
 _MIN_DIMENSION_SCORE = 3
@@ -55,6 +54,22 @@ _PHILOSOPHY_FORBIDDEN_PATTERNS: dict[str, list[str]] = {
     "brutalist":             [r"border-radius:\s*[1-9]\d*px"],
     "memphis-80s":           [],
 }
+
+
+def _font_present(font: str, code_lower: str) -> bool:
+    """True if ``font`` appears as a whole word or phrase in the code blob.
+
+    Matches ``font-family: 'Lora'`` and Google Fonts URLs such as
+    ``family=Source+Sans``; does not match substrings inside other words
+    (``inter`` inside ``internal``). ``code_lower`` must already be
+    lower-cased.
+    """
+    name = font.strip().lower()
+    if not name:
+        return True
+    body = r"[\s+]+".join(re.escape(part) for part in name.split())
+    pattern = r"(?<![a-z0-9])" + body + r"(?![a-z0-9])"
+    return re.search(pattern, code_lower) is not None
 
 
 def _hex_search_variants(hex_value: str) -> list[str]:
@@ -222,17 +237,23 @@ def deterministic_evidence_override(
         )
         _force("palette", palette_score, reason)
 
-    # Fonts: required Google Fonts families must literally appear.
+    # Fonts: required font families must appear as whole words (a
+    # font-family declaration or a Google Fonts URL). Substrings inside
+    # other words ("inter" in "internal") do not count. If NONE of the
+    # required fonts is present the brief's typography was ignored, and
+    # that is hard evidence: the philosophy score is capped below the
+    # per-dimension floor so the layer fails deterministically. If only
+    # some are missing the score is capped at 4 (soft evidence).
     fonts = dna.brand.fonts
     required_fonts = [f for f in (fonts.heading, fonts.body) if f]
     if required_fonts:
-        missing_fonts: list[str] = []
-        for font in required_fonts:
-            f_lower = font.lower()
-            head = f_lower.split()[0] if f_lower else ""
-            if f_lower not in code_lower and (not head or head not in code_lower):
-                missing_fonts.append(font)
+        missing_fonts = [f for f in required_fonts if not _font_present(f, code_lower)]
         if missing_fonts and len(missing_fonts) == len(required_fonts):
+            _cap(
+                "philosophy", 2,
+                f"none of the required font(s) {', '.join(missing_fonts)} found in code.",
+            )
+        elif missing_fonts:
             _cap(
                 "philosophy", 4,
                 f"required font(s) {', '.join(missing_fonts)} NOT FOUND in code.",
@@ -254,17 +275,16 @@ def deterministic_evidence_override(
         scores: list[int] = []
         for d in dimensions:
             if isinstance(d, dict):
-                try:
+                with contextlib.suppress(TypeError, ValueError):
                     scores.append(int(d.get("score") or 0))
-                except (TypeError, ValueError):
-                    pass
         if scores:
             verdict["overall_score"] = round(sum(scores) / len(scores))
 
     # Only downward overrides (missing evidence) force the build to fail.
     if overrides:
-        existing = verdict.get("missing") if isinstance(verdict.get("missing"), list) else []
-        verdict["missing"] = [f"DETERMINISTIC OVERRIDE: {'; '.join(overrides)}"] + list(existing)
+        existing_raw = verdict.get("missing")
+        existing: list[Any] = list(existing_raw) if isinstance(existing_raw, list) else []
+        verdict["missing"] = [f"DETERMINISTIC OVERRIDE: {'; '.join(overrides)}"] + existing
         verdict["forced_fail"] = True
 
     return verdict
@@ -395,7 +415,7 @@ def decide_verdict(verdict: dict[str, Any]) -> tuple[Verdict, str, dict[str, Any
 
 
 class DesignFidelityCheck(CheckLayer):
-    """Layer #23 — LLM-as-judge for design-brief fidelity with deterministic override."""
+    """Layer #20 — LLM-as-judge for design-brief fidelity with deterministic override."""
 
     NAME = "design_fidelity"
     KIND = LayerKind.hybrid
@@ -413,7 +433,8 @@ class DesignFidelityCheck(CheckLayer):
         if not root.is_dir():
             return self._skip("code_path is not a directory")
 
-        if design_dna_is_empty(ctx.brief):
+        dna = ctx.brief
+        if dna is None or design_dna_is_empty(dna):
             return self._skip("No design brief (or empty brief) — nothing to judge")
 
         if ctx.llm_client is None:
@@ -423,7 +444,7 @@ class DesignFidelityCheck(CheckLayer):
         if not code_blob.strip():
             return self._skip("No readable code under code_path")
 
-        brief = _render_brief_block(ctx.brief)
+        brief = _render_brief_block(dna)
         prompt = _build_judge_prompt(brief, code_blob)
 
         try:
@@ -445,7 +466,7 @@ class DesignFidelityCheck(CheckLayer):
                 details={"raw_tail": (raw or "")[-500:]},
             )
 
-        verdict = deterministic_evidence_override(ctx.brief, code_blob, verdict)
+        verdict = deterministic_evidence_override(dna, code_blob, verdict)
         outcome, summary, details = decide_verdict(verdict)
         override_fired = bool(verdict.get("forced_fail", False))
         return self._result(

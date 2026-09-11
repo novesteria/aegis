@@ -1,4 +1,4 @@
-"""Layer #7 — FastAPI router prefix double-mount detection.
+"""Layer #4 — FastAPI router prefix double-mount detection.
 
 Catches the failure mode where an ``APIRouter`` is declared with a
 ``prefix=`` *and* included with another ``prefix=`` on
@@ -245,7 +245,7 @@ def find_router_conflicts(root: Path) -> tuple[list[RouterConflict], int, int, i
 
 
 class RouterPrefixConsistencyCheck(CheckLayer):
-    """Layer #7 — FastAPI router prefix double-mount detection."""
+    """Layer #4 — FastAPI router prefix double-mount detection."""
 
     NAME = "router_prefix_consistency"
     KIND = LayerKind.deterministic

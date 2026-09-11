@@ -3,10 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 from unittest.mock import patch
-
-import pytest
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.js_syntax import (
@@ -21,7 +18,7 @@ from aegis.subprocess_runner import CmdResult
 def test_layer_metadata():
     layer = JsSyntaxCheck()
     assert layer.NAME == "js_syntax"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
 
 
 def test_find_js_files_skips_node_modules(tmp_path):

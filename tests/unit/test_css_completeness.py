@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.css_completeness import (
     CssCompletenessCheck,
@@ -11,7 +9,6 @@ from aegis.checks.css_completeness import (
     is_css_stub,
 )
 from aegis.result import LayerKind, Verdict
-
 
 # ----- is_css_stub pure function -------------------------------------------
 
@@ -84,7 +81,7 @@ def test_skips_node_modules(tmp_path):
 def test_layer_metadata():
     layer = CssCompletenessCheck()
     assert layer.NAME == "css_completeness"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
     assert "static_html" in layer.APPLIES_TO
 

@@ -1,6 +1,6 @@
-"""Layer #11 — named imports must match exports in the target module.
+"""Layer #8 — named imports must match exports in the target module.
 
-Static-import resolution (Layer #4 / Layer #16) verifies that the file
+Static-import resolution (Layer #1 / Layer #13) verifies that the file
 imported exists. This layer goes one level deeper: for relative imports
 of named members, the named identifiers must actually be exported from
 that file.
@@ -109,7 +109,7 @@ def find_named_import_problems(
 
 
 class NamedImportConsistencyCheck(CheckLayer):
-    """Layer #11 — named imports from relative paths must resolve."""
+    """Layer #8 — named imports from relative paths must resolve."""
 
     NAME = "named_import_consistency"
     KIND = LayerKind.deterministic

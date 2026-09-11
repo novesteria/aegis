@@ -1,4 +1,4 @@
-"""Layer #5 — Python function-body completeness.
+"""Layer #2 — Python function-body completeness.
 
 Detects functions whose body compiles but does nothing — the agent
 declared the surface but never wrote the implementation. Pure AST
@@ -39,7 +39,6 @@ from pathlib import Path
 from aegis.checks._python_helpers import find_python_sources
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 # Function names that suggest "entry point" — if they're stubs, the
 # project doesn't actually do anything when run.
@@ -149,7 +148,7 @@ def is_critical_stub_name(name: str) -> bool:
 
 
 class PythonCompletenessCheck(CheckLayer):
-    """Layer #5 — detect stub function bodies in Python code."""
+    """Layer #2 — detect stub function bodies in Python code."""
 
     NAME = "python_completeness"
     KIND = LayerKind.deterministic

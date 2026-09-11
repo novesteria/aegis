@@ -1,4 +1,4 @@
-"""Layer #17 — every #id the JS hooks into must exist in the HTML.
+"""Layer #14 — every #id the JS hooks into must exist in the HTML.
 
 Catches the canonical vanilla-JS bug where the HTML and JS were
 generated independently and picked different identifiers:
@@ -34,7 +34,6 @@ from pathlib import Path
 
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _HTML_ID_RE = re.compile(r"""\bid\s*=\s*["']([A-Za-z][\w:.\-]*)["']""")
 _GETBYID_RE = re.compile(
@@ -134,7 +133,7 @@ def looks_like_test_file(rel_path: str) -> bool:
 
 
 class HtmlJsIdParityCheck(CheckLayer):
-    """Layer #17 — JS id references must exist in some HTML file."""
+    """Layer #14 — JS id references must exist in some HTML file."""
 
     NAME = "html_js_id_parity"
     KIND = LayerKind.deterministic

@@ -1,4 +1,4 @@
-"""Layer #14 — consumer destructures fields the hook doesn't return.
+"""Layer #11 — consumer destructures fields the hook doesn't return.
 
 Catches the React-hook variant of "type drift": the hook author
 returns ``{ a, b }`` but a consumer writes
@@ -36,7 +36,6 @@ from pathlib import Path
 from aegis.checks._ts_helpers import find_ts_sources
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _FUNC_DECL_RE = re.compile(
     r"""(?:export\s+)?(?:async\s+)?function\s+(use[A-Z]\w*)\s*\([^)]*\)\s*(?::[^{]+)?\s*\{""",
@@ -245,7 +244,7 @@ def find_hook_destructure_problems(
 
 
 class HookDestructureConsistencyCheck(CheckLayer):
-    """Layer #14 — hook consumers must destructure only fields the hook returns."""
+    """Layer #11 — hook consumers must destructure only fields the hook returns."""
 
     NAME = "hook_destructure_consistency"
     KIND = LayerKind.deterministic

@@ -1,4 +1,4 @@
-"""Layer #9 — CSS files must contain real content, not just a stub comment.
+"""Layer #6 — CSS files must contain real content, not just a stub comment.
 
 UX/frontend agents that fall back to ``/* Generated CSS */`` when the
 LLM response had no CSS block ship a 19-byte file. The README still
@@ -35,7 +35,6 @@ from pathlib import Path
 
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _COMMENT_RE = re.compile(r"/\*[\s\S]*?\*/", re.MULTILINE)
 _RULE_RE = re.compile(r"\{[\s\S]*?\}")
@@ -98,9 +97,7 @@ def is_css_stub(source: str) -> bool:
         return False
     # custom-prop regex must match the ORIGINAL source so we don't
     # accidentally strip the rule's braces along with comments.
-    if _CUSTOM_PROP_RE.search(source):
-        return False
-    return True
+    return not _CUSTOM_PROP_RE.search(source)
 
 
 def find_css_stubs(root: Path) -> tuple[list[CssStub], int]:
@@ -125,7 +122,7 @@ def find_css_stubs(root: Path) -> tuple[list[CssStub], int]:
 
 
 class CssCompletenessCheck(CheckLayer):
-    """Layer #9 — CSS files must contain real rules, directives, or
+    """Layer #6 — CSS files must contain real rules, directives, or
     custom properties."""
 
     NAME = "css_completeness"

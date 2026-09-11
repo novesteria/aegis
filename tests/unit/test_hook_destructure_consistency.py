@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.hook_destructure_consistency import (
     HookDestructureConsistencyCheck,
@@ -12,7 +10,6 @@ from aegis.checks.hook_destructure_consistency import (
     find_hook_destructure_problems,
 )
 from aegis.result import LayerKind, Verdict
-
 
 # ----- _keys_from_object_literal pure -----------------------------------
 
@@ -137,7 +134,7 @@ def test_consumer_only_subset_passes(tmp_path):
 def test_layer_metadata():
     layer = HookDestructureConsistencyCheck()
     assert layer.NAME == "hook_destructure_consistency"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

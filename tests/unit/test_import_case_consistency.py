@@ -3,18 +3,16 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 import pytest
 
+from aegis.checks._ts_helpers import norm_case
 from aegis.checks.base import ValidationContext
 from aegis.checks.import_case_consistency import (
     ImportCaseConsistencyCheck,
     find_case_mismatches,
 )
-from aegis.checks._ts_helpers import norm_case
 from aegis.result import LayerKind, Verdict
-
 
 # ----- norm_case pure --------------------------------------------------
 
@@ -97,7 +95,7 @@ def test_python_missing_name_not_flagged(tmp_path):
 def test_layer_metadata():
     layer = ImportCaseConsistencyCheck()
     assert layer.NAME == "import_case_consistency"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
     assert "python" in layer.APPLIES_TO
 

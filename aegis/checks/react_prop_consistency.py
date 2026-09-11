@@ -1,4 +1,4 @@
-"""Layer #10 — JSX call sites must pass props the component declares.
+"""Layer #7 — JSX call sites must pass props the component declares.
 
 Catches the canonical React/TS bug where one file calls
 ``<CryptoCard crypto={c} />`` while ``CryptoCard.tsx`` declares
@@ -28,7 +28,6 @@ from pathlib import Path
 from aegis.checks._ts_helpers import find_tsx_sources
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 # Built-in JSX attributes that any component implicitly accepts. Keeping
 # the set narrow on purpose — anything genuinely common (event handlers,
@@ -253,7 +252,7 @@ def find_prop_problems(
 
 
 class ReactPropConsistencyCheck(CheckLayer):
-    """Layer #10 — JSX prop usage must match the component's declared Props."""
+    """Layer #7 — JSX prop usage must match the component's declared Props."""
 
     NAME = "react_prop_consistency"
     KIND = LayerKind.deterministic

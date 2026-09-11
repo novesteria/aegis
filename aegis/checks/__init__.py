@@ -38,29 +38,29 @@ from aegis.checks.tsc import TscCheck
 # comments correspond to the entries in docs/LAYER_INDEX.md.
 LAYERS: list[type[CheckLayer]] = [
     # ---- structural / AST layers ----
-    PythonImportsCheck,                  # #4
-    PythonCompletenessCheck,             # #5
-    PythonDepsCompletenessCheck,         # #6
-    RouterPrefixConsistencyCheck,        # #7
-    NodeDepsCompletenessCheck,           # #8
-    CssCompletenessCheck,                # #9
-    ReactPropConsistencyCheck,           # #10
-    NamedImportConsistencyCheck,         # #11
-    ImportCaseConsistencyCheck,          # #12
-    DuplicateTypeDeclarationsCheck,      # #13
-    HookDestructureConsistencyCheck,     # #14
-    BraceBalanceCheck,                   # #15
-    StaticImportsCheck,                  # #16
-    HtmlJsIdParityCheck,                 # #17
-    InteractivityCheck,                  # #18
+    PythonImportsCheck,                  # #1
+    PythonCompletenessCheck,             # #2
+    PythonDepsCompletenessCheck,         # #3
+    RouterPrefixConsistencyCheck,        # #4
+    NodeDepsCompletenessCheck,           # #5
+    CssCompletenessCheck,                # #6
+    ReactPropConsistencyCheck,           # #7
+    NamedImportConsistencyCheck,         # #8
+    ImportCaseConsistencyCheck,          # #9
+    DuplicateTypeDeclarationsCheck,      # #10
+    HookDestructureConsistencyCheck,     # #11
+    BraceBalanceCheck,                   # #12
+    StaticImportsCheck,                  # #13
+    HtmlJsIdParityCheck,                 # #14
+    InteractivityCheck,                  # #15
     # ---- subprocess layers ----
-    JsSyntaxCheck,                       # #19
-    NpmInstallCheck,                     # #20
-    TscCheck,                            # #21
-    PytestCheck,                         # #22
+    JsSyntaxCheck,                       # #16
+    NpmInstallCheck,                     # #17
+    TscCheck,                            # #18
+    PytestCheck,                         # #19
     # ---- LLM-judge / hybrid layers ----
-    DesignFidelityCheck,                 # #23
-    FeatureCoverageCheck,                # #24
+    DesignFidelityCheck,                 # #20
+    FeatureCoverageCheck,                # #21
 ]
 
 

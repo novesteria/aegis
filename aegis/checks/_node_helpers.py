@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 # Node built-in modules. ``import fs from 'fs'`` is always valid; no
 # package.json entry needed. Kept narrow (no third-party-shipped
@@ -68,18 +69,19 @@ def find_node_sources(root: Path) -> list[Path]:
     return out
 
 
-def load_package_json(root: Path) -> dict | None:
+def load_package_json(root: Path) -> dict[str, Any] | None:
     """Parse ``root/package.json``. Returns dict or None if missing/invalid."""
     pkg_path = root / "package.json"
     if not pkg_path.exists():
         return None
     try:
-        return json.loads(pkg_path.read_text(encoding="utf-8"))
+        data = json.loads(pkg_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return None
+    return data if isinstance(data, dict) else None
 
 
-def declared_deps(pkg: dict) -> set[str]:
+def declared_deps(pkg: dict[str, Any]) -> set[str]:
     """Collect declared package names from all dependency tables."""
     declared: set[str] = set()
     for key in ("dependencies", "devDependencies",

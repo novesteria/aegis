@@ -4,9 +4,6 @@ from __future__ import annotations
 
 import asyncio
 import json
-from pathlib import Path
-
-import pytest
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.feature_coverage import (
@@ -146,7 +143,7 @@ def test_cross_validate_passes_when_markers_and_llm_agree():
 def test_layer_metadata():
     layer = FeatureCoverageCheck()
     assert layer.NAME == "feature_coverage"
-    assert layer.KIND == LayerKind.hybrid
+    assert LayerKind.hybrid == layer.KIND
 
 
 def test_layer_skipped_no_brief(tmp_path):

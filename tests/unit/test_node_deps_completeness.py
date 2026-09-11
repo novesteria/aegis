@@ -5,14 +5,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from aegis.checks._node_helpers import (
+    extract_import_specifiers,
+    package_root_of,
+)
 from aegis.checks.base import ValidationContext
 from aegis.checks.node_deps_completeness import (
     NodeDepsCompletenessCheck,
     find_undeclared_node_deps,
-)
-from aegis.checks._node_helpers import (
-    extract_import_specifiers,
-    package_root_of,
 )
 from aegis.result import LayerKind, Verdict
 
@@ -138,7 +138,7 @@ def test_node_modules_directory_skipped(tmp_path):
 def test_layer_metadata():
     layer = NodeDepsCompletenessCheck()
     assert layer.NAME == "node_deps_completeness"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

@@ -3,16 +3,12 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 from unittest.mock import patch
-
-import pytest
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.pytest_check import PytestCheck, has_pytest_inputs
 from aegis.result import LayerKind, Verdict
 from aegis.subprocess_runner import CmdResult
-
 
 # ----- has_pytest_inputs pure -----------------------------------------
 
@@ -87,7 +83,7 @@ def _timeout():
 def test_layer_metadata():
     layer = PytestCheck()
     assert layer.NAME == "pytest"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "python" in layer.APPLIES_TO
 
 

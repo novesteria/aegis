@@ -4,10 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from pathlib import Path
 from unittest.mock import patch
-
-import pytest
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.tsc import TscCheck, patch_tsconfig_excludes
@@ -63,7 +60,7 @@ def test_patch_returns_false_on_invalid_json(tmp_path):
 def test_layer_metadata():
     layer = TscCheck()
     assert layer.NAME == "tsc"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

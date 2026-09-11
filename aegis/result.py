@@ -7,32 +7,32 @@ the public API — changes here are semver-breaking from v1.0.0 onward.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field, asdict
-from datetime import datetime, timezone
-from enum import Enum
+from dataclasses import asdict, dataclass, field
+from datetime import UTC, datetime
+from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
 
-class LayerKind(str, Enum):
+class LayerKind(StrEnum):
     """Categorizes a check layer by how it judges.
 
-    ``deterministic`` layers (22 of 24) run AST parsing, regex, file I/O,
+    ``deterministic`` layers (19 of 21) run AST parsing, regex, file I/O,
     or subprocess commands. No LLM call. Reproducible without API keys.
 
-    ``llm_judge`` layers (1 of 24) delegate to an LLM where AST has no
-    structural surface — design fidelity, microcopy tone, etc.
+    ``hybrid`` layers (2 of 21: design_fidelity, feature_coverage) ask an
+    LLM for judgment but reserve a deterministic evidence check that can
+    override the LLM verdict. The deterministic check has the final word.
 
-    ``hybrid`` layers (1 of 24) ask an LLM for judgment but reserve a
-    deterministic evidence check that can override the LLM verdict.
-    The deterministic layer has the final word.
+    ``llm_judge`` is reserved for layers that would rely on the LLM alone.
+    No shipped layer uses it.
     """
     deterministic = "deterministic"
     llm_judge = "llm_judge"
     hybrid = "hybrid"
 
 
-class Verdict(str, Enum):
+class Verdict(StrEnum):
     """The outcome of a single check layer."""
     passed = "passed"
     failed = "failed"
@@ -93,7 +93,7 @@ class ValidationReport:
     """Total wall-clock duration."""
 
     timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
     """ISO-8601 UTC timestamp when the run started."""
 
@@ -134,12 +134,12 @@ class ValidationReport:
 
     def summary(self) -> str:
         """Human-readable single-paragraph summary."""
-        passed_count = sum(1 for l in self.layers if l.passed())
-        failed_count = sum(1 for l in self.layers if l.verdict == Verdict.failed)
-        skipped_count = sum(1 for l in self.layers if l.verdict == Verdict.skipped)
+        passed_count = sum(1 for layer in self.layers if layer.passed())
+        failed_count = sum(1 for layer in self.layers if layer.verdict == Verdict.failed)
+        skipped_count = sum(1 for layer in self.layers if layer.verdict == Verdict.skipped)
         overall = "PASS" if self.passed else "FAIL"
         first_fail = next(
-            (l for l in self.layers if l.verdict == Verdict.failed),
+            (layer for layer in self.layers if layer.verdict == Verdict.failed),
             None,
         )
         if first_fail is not None:
@@ -154,7 +154,7 @@ class ValidationReport:
 
     def failed_layers(self) -> list[LayerResult]:
         """All layers that reported ``failed`` (excludes ``error`` and ``skipped``)."""
-        return [l for l in self.layers if l.verdict == Verdict.failed]
+        return [layer for layer in self.layers if layer.verdict == Verdict.failed]
 
 
 __all__ = ["LayerKind", "Verdict", "LayerResult", "ValidationReport"]

@@ -4,21 +4,16 @@ from __future__ import annotations
 
 import asyncio
 import json
-from dataclasses import replace
-from pathlib import Path
 
-import pytest
-
+from aegis.checks._llm_helpers import design_dna_is_empty
 from aegis.checks.base import ValidationContext
 from aegis.checks.design_fidelity import (
     DesignFidelityCheck,
     decide_verdict,
     deterministic_evidence_override,
 )
-from aegis.checks._llm_helpers import design_dna_is_empty
 from aegis.design_dna import Brand, DesignDNA, Fonts, Palette, Philosophy
 from aegis.result import LayerKind, Verdict
-
 
 # ----- helpers -------------------------------------------------------------
 
@@ -185,7 +180,7 @@ def test_decide_forced_fail_trumps_score():
 def test_layer_metadata():
     layer = DesignFidelityCheck()
     assert layer.NAME == "design_fidelity"
-    assert layer.KIND == LayerKind.hybrid
+    assert LayerKind.hybrid == layer.KIND
 
 
 def test_layer_skipped_no_brief(tmp_path):

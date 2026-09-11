@@ -139,7 +139,7 @@ def test_syntax_error_file_skipped(tmp_path):
 def test_layer_metadata():
     layer = RouterPrefixConsistencyCheck()
     assert layer.NAME == "router_prefix_consistency"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "python" in layer.APPLIES_TO
 
 

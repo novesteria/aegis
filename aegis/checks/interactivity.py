@@ -1,4 +1,4 @@
-"""Layer #18 — interactive HTML elements need at least one JS event handler.
+"""Layer #15 — interactive HTML elements need at least one JS event handler.
 
 Catches the "dead UI" failure mode: the agent generated a page full of
 ``<button>``s and ``<form>``s, but the accompanying JS never calls
@@ -30,7 +30,6 @@ from pathlib import Path
 
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _INTERACTIVE_RE = re.compile(
     r"<(button|input|select|textarea|form)\b", re.IGNORECASE
@@ -113,7 +112,7 @@ def count_inline_html_handlers(html_files: list[Path]) -> int:
 
 
 class InteractivityCheck(CheckLayer):
-    """Layer #18 — interactive HTML needs at least one JS event handler."""
+    """Layer #15 — interactive HTML needs at least one JS event handler."""
 
     NAME = "interactivity"
     KIND = LayerKind.deterministic

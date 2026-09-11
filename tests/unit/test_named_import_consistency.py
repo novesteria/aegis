@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.named_import_consistency import (
     NamedImportConsistencyCheck,
@@ -15,7 +13,7 @@ from aegis.result import LayerKind, Verdict
 def test_layer_metadata():
     layer = NamedImportConsistencyCheck()
     assert layer.NAME == "named_import_consistency"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

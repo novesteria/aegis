@@ -1,4 +1,4 @@
-"""Layer #22 — `pytest` must pass for Python stacks that have tests.
+"""Layer #19 — `pytest` must pass for Python stacks that have tests.
 
 For Python projects, running the test suite is the strongest functional
 signal we have. A green static-check pass with red pytest output means
@@ -14,7 +14,8 @@ Strategy:
 
    - Prefer a venv-style ``./.venv/bin/python`` (Unix) or
      ``./.venv/Scripts/python.exe`` (Windows).
-   - Fall back to the ``python`` on PATH.
+   - Else ``python``, then ``python3`` on PATH; else the interpreter
+     running Aegis (``sys.executable``). macOS ships no ``python``.
 
 3. Run ``python -m pytest -q --tb=short --no-header`` from the root.
 4. Non-zero exit → fail with the captured output.
@@ -26,8 +27,9 @@ Python validation and we have something to test.
 
 from __future__ import annotations
 
-import os
 import platform
+import shutil
+import sys
 import time
 from pathlib import Path
 
@@ -35,12 +37,11 @@ from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
 from aegis.subprocess_runner import run_cmd, scrub_env
 
-
 _TEST_DIR_NAMES: frozenset[str] = frozenset(["tests", "test"])
 
 
 def _resolve_python(root: Path) -> str:
-    """Prefer a project venv interpreter, fall back to PATH ``python``."""
+    """Project venv first; then ``python``/``python3`` on PATH; then ``sys.executable``."""
     is_windows = platform.system() == "Windows"
     venv_dirs = (".venv", "venv")
     rel_python = (
@@ -50,7 +51,11 @@ def _resolve_python(root: Path) -> str:
         cand = root / venv / rel_python
         if cand.exists():
             return str(cand)
-    return "python"
+    for name in ("python", "python3"):
+        found = shutil.which(name)
+        if found:
+            return found
+    return sys.executable
 
 
 def has_pytest_inputs(root: Path) -> bool:
@@ -105,7 +110,7 @@ def has_pytest_inputs(root: Path) -> bool:
 
 
 class PytestCheck(CheckLayer):
-    """Layer #22 — `python -m pytest` (skip cleanly when no tests)."""
+    """Layer #19 — `python -m pytest` (skip cleanly when no tests)."""
 
     NAME = "pytest"
     KIND = LayerKind.deterministic

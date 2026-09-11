@@ -1,4 +1,4 @@
-"""Layer #15 — JS/TS brace/paren/bracket balance.
+"""Layer #12 — JS/TS brace/paren/bracket balance.
 
 Catches mid-function truncation: an agent runs out of tokens and stops
 writing in the middle of a function body. ``node --check`` would catch
@@ -29,7 +29,6 @@ from typing import NamedTuple
 
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _JS_EXTENSIONS: tuple[str, ...] = (".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx")
 _MAX_FILES_PER_RUN = 50

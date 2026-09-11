@@ -19,12 +19,12 @@ See ``docs/`` in the source repo for the layer index, methodology, and
 extraction plan.
 """
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0"
 
-from aegis.result import LayerResult, ValidationReport
-from aegis.pipeline import ValidationPipeline
-from aegis.llm_client import LLMClient
 from aegis.design_dna import DesignDNA, load_brief
+from aegis.llm_client import LLMClient
+from aegis.pipeline import ValidationPipeline
+from aegis.result import LayerResult, ValidationReport
 
 # The default LLM client requires the optional anthropic dependency.
 # Import lazily so `import aegis` works in environments without it.

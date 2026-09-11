@@ -7,8 +7,6 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.npm_install import NpmInstallCheck
 from aegis.result import LayerKind, Verdict
@@ -47,7 +45,7 @@ def _pkg(tmp_path: Path, deps=None):
 def test_layer_metadata():
     layer = NpmInstallCheck()
     assert layer.NAME == "npm_install"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

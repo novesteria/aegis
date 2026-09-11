@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.python_imports import (
     PythonImportsCheck,
@@ -29,7 +27,7 @@ def _make_pkg(root: Path, dotted: str, *, init: bool = True) -> Path:
 def test_layer_metadata():
     layer = PythonImportsCheck()
     assert layer.NAME == "python_imports"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "python" in layer.APPLIES_TO
 
 

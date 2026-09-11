@@ -18,7 +18,6 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-
 # File extensions considered TS/JS source for these layers.
 TS_JS_EXTENSIONS: tuple[str, ...] = (".ts", ".tsx", ".js", ".jsx", ".mjs")
 

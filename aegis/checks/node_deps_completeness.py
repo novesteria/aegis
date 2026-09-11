@@ -1,4 +1,4 @@
-"""Layer #8 — every bare-specifier JS/TS import must be in package.json.
+"""Layer #5 — every bare-specifier JS/TS import must be in package.json.
 
 Catches the same failure mode as Python's deps-completeness layer, but
 for Node: an agent writes ``import axios from 'axios'`` and never adds
@@ -103,7 +103,7 @@ def find_undeclared_node_deps(
 
 
 class NodeDepsCompletenessCheck(CheckLayer):
-    """Layer #8 — bare-specifier Node imports must be declared."""
+    """Layer #5 — bare-specifier Node imports must be declared."""
 
     NAME = "node_deps_completeness"
     KIND = LayerKind.deterministic

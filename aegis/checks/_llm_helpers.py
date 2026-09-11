@@ -17,9 +17,9 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 from aegis.design_dna import DesignDNA
-
 
 _CODE_EXTENSIONS_DEFAULT: tuple[str, ...] = (
     ".html", ".htm", ".js", ".mjs", ".cjs",
@@ -73,7 +73,7 @@ def collect_code_blob(
     return "\n".join(code_blobs)
 
 
-def parse_json_verdict(raw: str) -> dict | None:
+def parse_json_verdict(raw: str) -> dict[str, Any] | None:
     """Parse the LLM's response as JSON, with two fallbacks.
 
     Tries:

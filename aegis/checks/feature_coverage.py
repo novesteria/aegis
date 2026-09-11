@@ -1,4 +1,4 @@
-"""Layer #24 — hybrid feature-coverage check (keyword scan + LLM judge).
+"""Layer #21 — hybrid feature-coverage check (keyword scan + LLM judge).
 
 The strongest "did the agent actually deliver what was asked?" signal
 in the validator. Two-stage verdict:
@@ -30,7 +30,6 @@ from __future__ import annotations
 
 import re
 import time
-from pathlib import Path
 from typing import Any
 
 from aegis.checks._llm_helpers import (
@@ -40,7 +39,6 @@ from aegis.checks._llm_helpers import (
 from aegis.checks.base import CheckLayer, ValidationContext
 from aegis.design_dna import DesignDNA
 from aegis.result import LayerKind, LayerResult, Verdict
-
 
 _MAX_TOKENS = 2048
 
@@ -439,7 +437,7 @@ def _gather_features(brief: DesignDNA) -> list[str]:
 
 
 class FeatureCoverageCheck(CheckLayer):
-    """Layer #24 — deterministic keyword scan + LLM judge for feature coverage."""
+    """Layer #21 — deterministic keyword scan + LLM judge for feature coverage."""
 
     NAME = "feature_coverage"
     KIND = LayerKind.hybrid

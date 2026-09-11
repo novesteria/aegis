@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.html_js_id_parity import (
     HtmlJsIdParityCheck,
@@ -16,7 +14,7 @@ from aegis.result import LayerKind, Verdict
 def test_layer_metadata():
     layer = HtmlJsIdParityCheck()
     assert layer.NAME == "html_js_id_parity"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "static_html" in layer.APPLIES_TO
 
 
@@ -89,7 +87,7 @@ def test_layer_fails_on_phantom_id(tmp_path):
     assert "theme-toggle" in result.details["missing_ids"]
 
 
-def test_querySelector_id_form(tmp_path):
+def test_query_selector_id_form(tmp_path):
     """`querySelector('#id')` is also tracked."""
     (tmp_path / "page.html").write_text("<div id='real'></div>")
     (tmp_path / "app.js").write_text(

@@ -25,6 +25,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 _STRUCTURAL_KEYS = ('"compilerOptions"', '"references"', '"files"', '"extends"')
 
@@ -73,7 +74,7 @@ def repair_root_tsconfig(
     if has_app_ref or has_node_ref:
         # Solution-style root: real compilerOptions live in the referenced
         # projects; the root only wires them together for `tsc -b`.
-        out: dict = {"files": []}
+        out: dict[str, Any] = {"files": []}
         refs = []
         if has_app_ref:
             refs.append({"path": "./tsconfig.app.json"})
@@ -85,7 +86,7 @@ def repair_root_tsconfig(
         return json.dumps(out, indent=2) + "\n"
 
     # Standalone: a complete, sane vite-react config.
-    comp: dict = {
+    comp: dict[str, Any] = {
         "target": "ES2020",
         "useDefineForClassFields": True,
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -113,7 +114,7 @@ def fix_narrow_lib(text: str) -> str | None:
     ``es3``/``es5`` ``target``. Returns new text or ``None`` when healthy."""
     new = text or ""
 
-    def _lib_sub(m: re.Match) -> str:
+    def _lib_sub(m: re.Match[str]) -> str:
         members = m.group(2)
         if _MODERN_ES.search(members):
             return m.group(0)

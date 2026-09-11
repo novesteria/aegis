@@ -6,9 +6,7 @@ from pathlib import Path
 
 from aegis.checks.base import ValidationContext
 from aegis.checks.python_deps_completeness import (
-    DeclaredDeps,
     PythonDepsCompletenessCheck,
-    find_undeclared_deps,
     parse_declared_deps,
 )
 from aegis.result import LayerKind, Verdict
@@ -21,7 +19,7 @@ def _set_requirements(root: Path, lines: list[str]) -> None:
 def test_layer_metadata():
     layer = PythonDepsCompletenessCheck()
     assert layer.NAME == "python_deps_completeness"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "python" in layer.APPLIES_TO
 
 
@@ -113,7 +111,7 @@ def test_emailstr_satisfied_by_extra(tmp_path):
     )
     layer = PythonDepsCompletenessCheck()
     ctx = ValidationContext(code_path=tmp_path, stacks=["python"])
-    result = layer.run(ctx)
+    layer.run(ctx)
     # The check is best-effort; the extra-bracket parsing may or may
     # not catch this. Accept either verdict — what matters is the
     # email_validator EXPLICIT declaration case works (next test).

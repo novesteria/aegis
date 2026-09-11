@@ -2,16 +2,13 @@
 
 from __future__ import annotations
 
-import pytest
-
+from aegis.checks.base import ValidationContext
 from aegis.checks.brace_balance import (
     BraceBalanceCheck,
     BraceCounts,
     count_brackets,
 )
-from aegis.checks.base import ValidationContext
 from aegis.result import LayerKind, Verdict
-
 
 # ----- count_brackets pure function -----------------------------------
 
@@ -142,7 +139,7 @@ def test_mismatches_method():
 def test_layer_metadata():
     layer = BraceBalanceCheck()
     assert layer.NAME == "ast_brace_balance"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
     assert "static_html" in layer.APPLIES_TO
 

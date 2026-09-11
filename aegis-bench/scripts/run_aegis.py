@@ -33,6 +33,9 @@ import asyncio
 import datetime as dt
 import json
 import os
+import platform
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Optional
@@ -59,6 +62,7 @@ def _load_env() -> None:
 _load_env()
 
 # Imports must come AFTER env load so AnthropicClient picks up the key.
+import aegis  # noqa: E402
 from aegis import validate as aegis_validate  # noqa: E402
 from aegis.design_dna import load_brief  # noqa: E402
 from aegis.llm_client import AnthropicClient  # noqa: E402
@@ -154,6 +158,36 @@ def _check_expected(
     return problems
 
 
+def _ensure_case_venv(input_dir: Path) -> Optional[str]:
+    """Create ``input/.venv`` from ``requirements.txt`` for Python cases.
+
+    The ``pytest`` layer prefers a project-local venv, so installing the
+    case's own dependencies there keeps the run reproducible on any
+    machine without touching the validator's environment. The venv is
+    git-ignored. Returns an error string on failure, else None.
+    """
+    req = input_dir / "requirements.txt"
+    venv = input_dir / ".venv"
+    if not req.exists():
+        return None
+    py = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    if py.exists():
+        return None
+    try:
+        subprocess.run([sys.executable, "-m", "venv", str(venv)], check=True, capture_output=True)
+        pip_cmd = [str(py), "-m", "pip", "install", "-q", "-r", str(req)]
+        r = subprocess.run(pip_cmd, capture_output=True, text=True)
+        if r.returncode != 0:
+            uv = shutil.which("uv")
+            if not uv:
+                return f"pip install failed: {r.stderr.strip()[-300:]}"
+            subprocess.run([uv, "pip", "install", "-q", "--python", str(py), "-r", str(req)],
+                           check=True, capture_output=True)
+    except (subprocess.CalledProcessError, OSError) as exc:
+        return f"venv setup failed: {exc}"
+    return None
+
+
 # ----- bench loop ------------------------------------------------------
 
 
@@ -171,6 +205,10 @@ async def run_case(
             "reason": "expected.json missing",
         }
     expected = json.loads(expected_path.read_text(encoding="utf-8"))
+
+    venv_err = _ensure_case_venv(input_dir)
+    if venv_err:
+        return {"case": case_dir.name, "status": "error", "reason": venv_err}
 
     # When the bench is run with --no-llm, cases whose verdict depends
     # on an LLM-using layer can't be honestly evaluated. Mark them
@@ -299,6 +337,11 @@ async def main_async(args: argparse.Namespace) -> int:
                 {
                     "timestamp_utc": dt.datetime.utcnow().isoformat() + "Z",
                     "use_llm": use_llm,
+                    "model": (getattr(llm_client, "model", None)
+                              or getattr(llm_client, "_model", None)) if use_llm else None,
+                    "aegis_version": aegis.__version__,
+                    "python": platform.python_version(),
+                    "platform": platform.platform(),
                     "total": total,
                     "counts": counts,
                     "rows": rows,

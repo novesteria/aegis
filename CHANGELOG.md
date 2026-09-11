@@ -84,7 +84,7 @@ First public release. Apache 2.0.
   Anthropic SDK ships as an optional `[anthropic]` extra.
 - `aegis.subprocess_runner.run_cmd` — sandboxed subprocess runner with
   credential env scrub and per-command timeout.
-- 24 check layers under `aegis/checks/`, registered in canonical
+- 21 check layers under `aegis/checks/`, registered in canonical
   execution order:
 
   - `python_imports`, `python_completeness`, `python_deps_completeness`
@@ -98,11 +98,11 @@ First public release. Apache 2.0.
   - `js_syntax`, `npm_install`, `tsc`, `pytest`
   - `design_fidelity` (hybrid), `feature_coverage` (hybrid)
 
-- `aegis-bench/` cohort: 16 cases under `cohort/05-` through
+- `aegis-bench/` cohort: 20 cases under `cohort/01-` through
   `cohort/20-`, each with `brief.json`, `input/`, `expected.json`,
   and a short technical README. `METHODOLOGY.md` describes case
   structure, run command, and reproducibility rules.
-- 284 unit tests under `tests/unit/`.
+- 299 unit tests under `tests/unit/`.
 - GitHub Actions workflow (`.github/workflows/test.yml`) — matrix
   pytest on Ubuntu / macOS / Windows for Python 3.11 + 3.12, plus a
   package-build job that produces wheel + sdist artifacts.

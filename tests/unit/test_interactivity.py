@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.interactivity import (
     InteractivityCheck,
+    count_inline_html_handlers,
     count_interactive_html,
     count_js_bindings,
-    count_inline_html_handlers,
 )
 from aegis.result import LayerKind, Verdict
 
@@ -17,7 +15,7 @@ from aegis.result import LayerKind, Verdict
 def test_layer_metadata():
     layer = InteractivityCheck()
     assert layer.NAME == "interactivity"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
 
 
 def test_counts_buttons(tmp_path):

@@ -1,4 +1,4 @@
-"""Layer #4 — Python local-import resolution.
+"""Layer #1 — Python local-import resolution.
 
 Catches the classic backend bug: agent writes ``from src.models.user
 import User`` but never creates ``src/models/user.py``. ``compileall``
@@ -124,10 +124,9 @@ def find_unresolved_local_imports(
                     rel_parts = list(py.relative_to(root).parts[:-1])
                     if level - 1 > 0:
                         # `from ..x import y` walks up `level - 1` packages.
-                        if level - 1 <= len(rel_parts):
-                            rel_parts = rel_parts[: -(level - 1)]
-                        else:
-                            rel_parts = []
+                        rel_parts = (
+                            rel_parts[: -(level - 1)] if level - 1 <= len(rel_parts) else []
+                        )
                     target_parts = rel_parts + ([mod] if mod else [])
                     if target_parts:
                         target_mod = ".".join(target_parts)

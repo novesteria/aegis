@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from aegis.checks.base import ValidationContext
 from aegis.checks.react_prop_consistency import (
     ReactPropConsistencyCheck,
     collect_component_props,
-    find_prop_problems,
 )
 from aegis.result import LayerKind, Verdict
 
@@ -16,7 +13,7 @@ from aegis.result import LayerKind, Verdict
 def test_layer_metadata():
     layer = ReactPropConsistencyCheck()
     assert layer.NAME == "react_prop_consistency"
-    assert layer.KIND == LayerKind.deterministic
+    assert LayerKind.deterministic == layer.KIND
     assert "node" in layer.APPLIES_TO
 
 

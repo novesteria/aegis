@@ -23,8 +23,14 @@ python -m aegis_cli check aegis-bench/cohort/<NN>-<slug>/input \
     --json results/<NN>-<slug>.json
 ```
 
-`--no-llm` skips the LLM-judge layers (`design_fidelity`,
-`feature_coverage`). Cases that require LLM evaluation declare
+`--no-llm` skips the LLM-using layers (`design_fidelity`,
+`feature_coverage`).
+
+Python cases ship a `requirements.txt`. The cohort runner
+(`scripts/run_aegis.py`) creates `input/.venv` from it before the run
+(git-ignored) so the `pytest` layer executes against the case's own
+dependencies on any machine. Nothing is installed into the validator's
+environment. Cases that require LLM evaluation declare
 `llm_calibration: "pending"` in `expected.json` until a real-model run
 captures the verdict.
 
@@ -68,7 +74,8 @@ A new case lands when the actual `aegis check` output reproduces
   specific model ID. Model upgrades produce a new bench run, not a
   silent score change.
 - **Public results.** Bench-run output JSON is committed under
-  `results/` with a timestamp.
+  `results/` with a timestamp, the model ID used by the LLM layers,
+  the validator version, and the Python/platform of the run.
 - **Case + validator evolve together.** When a validator change
   alters a case's verdict, the case's `expected.json` is updated in
   the same commit, with an explanation in the message.

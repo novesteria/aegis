@@ -24,7 +24,6 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-
 # Environment variable name patterns that look like credentials.
 # Matched case-insensitively against env var keys; any match → variable
 # is stripped from the subprocess env.
@@ -117,7 +116,7 @@ async def run_cmd(
             timeout=timeout,
         )
         timed_out = False
-    except asyncio.TimeoutError:
+    except TimeoutError:
         process.kill()
         stdout_bytes, stderr_bytes = await process.communicate()
         timed_out = True
